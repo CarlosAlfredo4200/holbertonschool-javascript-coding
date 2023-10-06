@@ -30,36 +30,26 @@ The second one is getAllStudentsByMajor:
 
 */
 
-import readDatabase from '../utils';
+const { readDatabase } = require('../utils');
 
-export default class StudentsController {
-  static getAllStudents(request, response) {
-    readDatabase('./database.csv')
-      .then((data) => {
-        const studentsByFields = data;
-        const fields = Object.keys(studentsByFields).sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
-        const studentsByField = fields.map((field) => `Number of students in ${field}: ${studentsByFields[field].length}. List: ${studentsByFields[field].join(', ')}`);
-        response.status(200).send(`This is the list of our students\n${studentsByField.join('\n')}`);
-      })
-      .catch(() => {
-        response.status(500).send('Cannot load the database');
-      });
+class StudentsController {
+  static async getAllStudents(req, res) {
+    try {
+      const studentData = await readDatabase('./database.csv');
+      // Implement logic to generate the response as required.
+    } catch (error) {
+      res.status(500).send('Cannot load the database');
+    }
   }
 
-  static getAllStudentsByMajor(request, response) {
-    const { major } = request.params;
-    if (major !== 'CS' && major !== 'SWE') {
-      response.status(500).send('Major parameter must be CS or SWE');
-    } else {
-      readDatabase('./database.csv')
-        .then((data) => {
-          const studentsByFields = data;
-          const studentsByMajor = studentsByFields[major].join(', ');
-          response.status(200).send(`List: ${studentsByMajor}`);
-        })
-        .catch(() => {
-          response.status(500).send('Cannot load the database');
-        });
+  static async getAllStudentsByMajor(req, res) {
+    try {
+      const major = req.params.major;
+      // Implement logic to filter students by major and generate the response.
+    } catch (error) {
+      res.status(500).send('Cannot load the database');
     }
   }
 }
+
+module.exports = StudentsController;
