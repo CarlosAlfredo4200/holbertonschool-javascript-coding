@@ -1,33 +1,24 @@
-// Task (5) - a small more complex HTTP server using the http module
-
 const http = require('http');
 const countStudents = require('./3-read_file_async');
 
-const database = process.argv.slice(2)[0];
-
-const host = '127.0.0.1';
 const port = 1245;
 
-const app = http.createServer((req, res) => {
+const app = http.createServer(async (req, res) => {
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  if (req.url === '/') {
-    res.end('Hello Holberton School!');
-  }
-  if (req.url === '/students') {
-    res.write('This is the list of our students\n');
-    countStudents(database)
-      .then((students) => {
-        res.end(`${students.join('\n')}`);
+  if (req.url === '/') res.end('Hello Holberton School!');
+  else if (req.url === '/students') {
+    await countStudents(process.argv[2])
+      .then((success) => {
+        const output = `This is the list of our students\n${success}`;
+        res.end(output);
       })
-      .catch((error) => {
-        res.end(error.message);
+      .catch((err) => {
+        res.write('This is the list of our students\n');
+        res.end(err.message);
       });
   }
 });
 
-app.listen(port, host, () => {
-  console.log(`Server running at http://${host}:${port}/`);
-});
+app.listen(port);
 
 module.exports = app;
