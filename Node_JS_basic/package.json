@@ -1,10 +1,10 @@
 {
   "name": "node_js_basics",
   "version": "1.0.0",
-  "description": "",
+  "description": ":open_file_folder: Specializations - Web Stack programming ― Back-end   :bust_in_silhouette: by Johann Kerbrat, Engineering Manager at Uber Works   :copyright: **[Holberton School](https://www.holbertonschool.com/)**   :bookmark: asynchronous file read | express | http server | javascript | node | process | synchronous file read",
   "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint",
+    "lint": "eslint",
     "check-lint": "lint [0-9]*.js",
     "test": "./node_modules/mocha/bin/mocha --require babel-register --exit",
     "dev": "nodemon --exec babel-node --presets babel-preset-env ./server.js ./database.csv"
